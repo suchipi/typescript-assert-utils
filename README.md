@@ -10,7 +10,7 @@ You can use these tools in your TypeScript project to "test" your types. This ca
 - In your TypeScript project, import `assert` and `Is`:
 
 ```ts
-import { assert, Is } from "typescript-assert-utils"
+import { assert, Is } from "typescript-assert-utils";
 ```
 
 - Use `assert` and `Is` on your types:
@@ -37,8 +37,9 @@ At runtime, `assert` is a no-op function.
 You may wish to exclude assertion-related code from your compiled code.
 
 To do so, you may use the tsConfig [`stripInternal`](https://www.typescriptlang.org/tsconfig#stripInternal) option, in conjunction with `@internal` comments:
+
 ```ts
-import { assert, Is } from "typescript-assert-utils"
+import { assert, Is } from "typescript-assert-utils";
 
 function myFunc<T>(t: T) {
   return t;
@@ -55,6 +56,7 @@ function myFunc<T>(t: T) {
 Or, you can put your assertions in a separate file. The separate file must be part of your TypeScript project (ie. included by your tsconfig.json), but shouldn't get imported by any of your normal code:
 
 `myFunc.ts`:
+
 ```ts
 export function myFunc<T>(t: T) {
   return t;
@@ -62,8 +64,9 @@ export function myFunc<T>(t: T) {
 ```
 
 `myFunc.type-assertions.ts`:
+
 ```ts
-import { assert, Is } from "typescript-assert-utils"
+import { assert, Is } from "typescript-assert-utils";
 
 import { myFunc } from "./myFunc";
 
@@ -83,7 +86,7 @@ Use this to cause an error at type-checking type if `T` is not `true`.
 export function assert<T>(): void;
 ```
 
-Note that `T` must be *exactly* the type `true`; `boolean` will not work.
+Note that `T` must be _exactly_ the type `true`; `boolean` will not work.
 
 Example:
 
