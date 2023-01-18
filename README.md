@@ -183,7 +183,7 @@ assert<IsAny<number>>();
 true if `T` is the special type `never`; false otherwise
 
 ```ts
-export type IsNever<T> = true | never;
+export type IsNever<T> = true | false;
 ```
 
 Example:
