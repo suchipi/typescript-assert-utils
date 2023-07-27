@@ -1,6 +1,6 @@
 {
   "name": "typescript-assert-utils",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Utility types for making assertions about TypeScript types",
   "main": "dist/index.js",
   "types": "src/index.ts",
@@ -15,7 +15,9 @@
     "is",
     "assert",
     "any",
-    "never"
+    "never",
+    "extends",
+    "assignable"
   ],
   "author": "Lily Skye <me@suchipi.com>",
   "repository": "suchipi/typescript-assert-utils",
