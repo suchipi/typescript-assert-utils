@@ -109,3 +109,15 @@ assert<Not<Is<string, number>>>();
 // @ts-expect-error
 assert<Is<string, any>>();
 assert<Not<Is<string, any>>>();
+
+export type IsAssignable<Subtype, Supertype> = Subtype extends Supertype ? true : false;
+
+assert<IsAssignable<"five", string>>();
+// @ts-expect-error
+assert<IsAssignable<string, "five">>();
+assert<Not<IsAssignable<string, "five">>>();
+
+assert<IsAssignable<45, number>>();
+
+// @ts-expect-error
+assert<IsAssignable<45, { a: 5 }>>();

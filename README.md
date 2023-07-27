@@ -203,6 +203,26 @@ assert<IsNever<never>>();
 assert<IsNever<number>>();
 ```
 
+### IsAssignable
+
+true when `Subtype` extends `Supertype`, and false otherwise.
+
+```ts
+export type IsAssignable<Subtype, Supertype> = true | false;
+```
+
+Example:
+
+```ts
+import { assert, IsAssignable } from "@suchipi/typescript-assert-utils";
+
+assert<IsAssignable<45, number>>();
+assert<IsAssignable<"potato", string>>();
+
+// Error: Type 'false' does not satisfy the constraint 'true'.
+assert<IsAssignable<45, string>>();
+```
+
 ## License
 
 MIT
