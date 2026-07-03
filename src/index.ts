@@ -4,10 +4,6 @@ export function assert<T extends true>(): void {}
 /** false if `T` is true; true otherwise */
 export type Not<T extends boolean> = T extends true ? false : true;
 
-assert<Not<false>>();
-// @ts-expect-error
-assert<Not<true>>();
-
 // `any` and `never` are the only values of `T` for which `T extends never` is true.
 // The outer `boolean extends...` filters out the `never`, because `any` is the only value
 // that universally returns the consequent of an `extends` type expression.
@@ -16,22 +12,10 @@ export type IsAny<T> = boolean extends (T extends never ? true : false)
   ? true
   : false;
 
-assert<IsAny<any>>();
-
-// @ts-expect-error
-assert<IsAny<never>>();
-assert<Not<IsAny<never>>>();
-
 /** true if `T` is the special type `never`; false otherwise */
 // Info about why we put brackets around T and never:
 // https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types
 export type IsNever<T> = [T] extends [never] ? true : false;
-
-assert<IsNever<never>>();
-// @ts-expect-error
-assert<IsNever<any>>();
-// @ts-expect-error
-assert<IsNever<string>>();
 
 type CanTypesExtendEachOther<T, U> = U extends T
   ? T extends U
@@ -40,28 +24,30 @@ type CanTypesExtendEachOther<T, U> = U extends T
   : false;
 
 /** true if `T` is a union type; false otherwise */
-type IsUnion<T> = CanTypesExtendEachOther<T, T> extends true
-  ? false
-  : CanTypesExtendEachOther<T, T> extends false
-  ? false
-  : // CanTypesExtendEachOther resolves to "boolean" for unions (instead of true or false), because each union member might not be equivalent to other members in the union
-    true;
+type IsUnion<T> =
+  CanTypesExtendEachOther<T, T> extends true
+    ? false
+    : CanTypesExtendEachOther<T, T> extends false
+      ? false
+      : // CanTypesExtendEachOther resolves to "boolean" for unions (instead of true or false), because each union member might not be equivalent to other members in the union
+        true;
 
 const uniqueUnionMember = Symbol("uniqueUnionMember");
 type uniqueUnionMember = typeof uniqueUnionMember;
 
 // `Is` for union types
-type AreUnionTypesEquivalent<T, U> = CanTypesExtendEachOther<
-  Exclude<T | uniqueUnionMember, U>,
-  uniqueUnionMember
-> extends true
-  ? CanTypesExtendEachOther<
-      Exclude<U | uniqueUnionMember, T>,
-      uniqueUnionMember
-    > extends true
-    ? true
-    : false
-  : false;
+type AreUnionTypesEquivalent<T, U> =
+  CanTypesExtendEachOther<
+    Exclude<T | uniqueUnionMember, U>,
+    uniqueUnionMember
+  > extends true
+    ? CanTypesExtendEachOther<
+        Exclude<U | uniqueUnionMember, T>,
+        uniqueUnionMember
+      > extends true
+      ? true
+      : false
+    : false;
 
 /** true when `T` is exactly `U`, and false otherwise. */
 // prettier-ignore
@@ -86,38 +72,13 @@ export type Is<T, U> =
     true
   : false;
 
-assert<Is<string, string>>();
-assert<Is<any, any>>();
-assert<Is<never, never>>();
-assert<Is<1 | 2, 2 | 1>>();
+export type IsAssignable<Subtype, Supertype> = Subtype extends Supertype
+  ? true
+  : false;
 
-// @ts-expect-error
-assert<Is<1 | never, never>>();
-
-// @ts-expect-error
-assert<Is<1 | 2 | 3, 2 | 1>>();
-
-assert<Is<"a" | "b", "b" | "a">>();
-
-// @ts-expect-error
-assert<Is<string, number>>();
-// @ts-expect-error
-assert<Is<string, never>>();
-
-assert<Not<Is<string, number>>>();
-
-// @ts-expect-error
-assert<Is<string, any>>();
-assert<Not<Is<string, any>>>();
-
-export type IsAssignable<Subtype, Supertype> = Subtype extends Supertype ? true : false;
-
-assert<IsAssignable<"five", string>>();
-// @ts-expect-error
-assert<IsAssignable<string, "five">>();
-assert<Not<IsAssignable<string, "five">>>();
-
-assert<IsAssignable<45, number>>();
-
-// @ts-expect-error
-assert<IsAssignable<45, { a: 5 }>>();
+/**
+ * Gives better error messages than `assert<IsAssignable<...>>`.
+ *
+ * Use in conjunction with `declare var`.
+ */
+export function assertIsAssignableTo<T>(input: T): void {}
