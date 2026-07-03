@@ -1,6 +1,6 @@
 {
   "name": "typescript-assert-utils",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Utility types for making assertions about TypeScript types",
   "main": "dist/index.js",
   "types": "src/index.ts",
