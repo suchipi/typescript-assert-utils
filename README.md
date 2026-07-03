@@ -223,6 +223,20 @@ assert<IsAssignable<"potato", string>>();
 assert<IsAssignable<45, string>>();
 ```
 
+### assertIsAssignableTo
+
+Performs the same assertion as `IsAssignable`, but exposes the type error in a more human-readable way.
+
+```ts
+import { assertIsAssignableTo } from "@suchipi/typescript-assert-utils";
+
+assertIsAssignableTo<number>(45);
+assertIsAssignableTo<string>("potato");
+
+// Error: Argument of type 'number' is not assignable to parameter of type 'string'.
+assertIsAssignableTo<string>(45);
+```
+
 ## License
 
 MIT
